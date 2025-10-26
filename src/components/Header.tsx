@@ -36,7 +36,7 @@ const Header = ({
   actions 
 }: HeaderProps) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  // No theme toggle — app uses dark branding by default
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
@@ -99,14 +99,7 @@ const Header = ({
     }
   };
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    // In a real app, this would toggle the theme
-    toast({
-      title: "Theme",
-      description: `Switched to ${isDarkMode ? "light" : "dark"} mode`,
-    });
-  };
+  // Theme toggle intentionally removed (branding uses dark mode)
 
   return (
     <header className="sticky top-0 z-30 glass-nav">
@@ -195,9 +188,26 @@ const Header = ({
               <HelpCircle className="h-4 w-4" />
             </Button>
 
-            {/* Theme Toggle */}
-            <Button variant="ghost" size="sm" onClick={toggleDarkMode} className="glass hover:glass-primary">
-              {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            {/* Notifications button (opens toast) */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                toast({
+                  title: "Notifications",
+                  description: "You have 3 new notifications.",
+                });
+              }}
+              className="glass hover:glass-primary"
+              title="Notifications"
+            >
+              <Bell className="h-4 w-4" />
+              <Badge
+                variant="destructive"
+                className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+              >
+                3
+              </Badge>
             </Button>
 
             {/* Settings */}
@@ -206,7 +216,13 @@ const Header = ({
             </Button>
 
             {/* User Profile */}
-            <Button variant="ghost" size="sm" className="relative glass hover:glass-primary">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/profile')}
+              className="relative glass hover:glass-primary"
+              title="Profile"
+            >
               <User className="h-4 w-4" />
             </Button>
           </div>
